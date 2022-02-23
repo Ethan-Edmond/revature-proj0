@@ -13,6 +13,10 @@ public class JournalService {
         this.dao = new JournalDAO();
     }
 
+    public JournalService(JournalDAO dao) {
+        this.dao = dao;
+    }
+
     public DynamicArray<Entry> getAllEntries() {
         try {
             return this.dao.getAllEntries();
@@ -22,11 +26,13 @@ public class JournalService {
         }
     }
 
-    public void addEntry(Entry added, Logger log) {
+    public boolean addEntry(Entry added, Logger log) {
         try {
             this.dao.addEntry(added);
+            return true;
         } catch (SQLException e) {
             log.error("Failed to add entry", e);
+            return false;
         }
     }
 }

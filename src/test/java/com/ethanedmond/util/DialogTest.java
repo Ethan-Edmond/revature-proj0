@@ -8,6 +8,6 @@ class DialogTest {
 
     @Test
     void runDialog() { // TODO maybe mock the scanner here
-        String res = Dialog.runDialog("asdf");
+        // String res = Dialog.runDialog("asdf");
     }
 }

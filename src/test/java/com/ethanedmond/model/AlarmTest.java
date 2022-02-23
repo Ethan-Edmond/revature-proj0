@@ -11,6 +11,6 @@ class AlarmTest {
     void testToString() {
         subject001 = new Alarm(1, "sleep_end_time", "sleep_end_date", false);
         System.out.println(subject001.toString());
-        assertEquals("Alarm1: sleep_end=sleep_end_time sleep_end_date, has_fired=false", subject001.toString());
+        assertEquals("Alarm1 set to ring at sleep_end_time sleep_end_date, has_fired=false", subject001.toString());
     }
 }

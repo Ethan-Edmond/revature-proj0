@@ -27,12 +27,14 @@ public class Driver {
             clip.loop(20);
             Dialog.runDialog("Are you awake? ");
             clip.stop();
+            clip.close();
+            audioStream.close();
             alarmService.fireAlarm(alarm_id, log);
             String content = Dialog.runDialog("What did you dream about? ");
             Entry added = new Entry(alarm_id, content);
             journalService.addEntry(added, log);
             log.info("Entry" + alarm_id + " successfully added!");
-        } catch (IOException err) { // TODO log errors instead of printing them
+        } catch (IOException err) {
             log.error("Error: cant run schtasks or cant get audioInputStream", err);
         } catch (UnsupportedAudioFileException err) {
             log.error("Error: audio file is invalid",err);

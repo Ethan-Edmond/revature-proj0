@@ -17,7 +17,7 @@ public class Driver {
                 case "list":
                     System.out.println(alarmService.getAllAlarms());
                     break;
-                case "read": // TODO write some tests for this stuff
+                case "read":
                     System.out.println(journalService.getAllEntries());
                     break;
                 case "add":

@@ -15,6 +15,10 @@ public class AlarmService {
         this.dao = new AlarmDAO();
     }
 
+    public AlarmService(AlarmDAO dao) {
+        this.dao = dao;
+    }
+
     public DynamicArray<Alarm> getAllAlarms() {  // TODO maybe prettify the output later
         try {
             return this.dao.getAllAlarms();
