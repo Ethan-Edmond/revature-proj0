@@ -4,6 +4,7 @@ import com.ethanedmond.dao.AlarmDAO;
 import com.ethanedmond.datastructures.DynamicArray;
 import com.ethanedmond.model.Alarm;
 import com.ethanedmond.util.Dialog;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -70,12 +71,11 @@ public class AlarmService {
         }
     }
 
-    public void fireAlarm(int id) {
+    public void fireAlarm(int id, Logger log) {
         try {
             this.dao.fireAlarm(id);
         } catch (SQLException e) {
-            System.out.println("Failed to fire alarm");
-            e.printStackTrace();
+            log.error("Failed to fire alarm", e);
         }
     }
 }

@@ -4,17 +4,22 @@ import com.ethanedmond.model.Entry;
 import com.ethanedmond.service.AlarmService;
 import com.ethanedmond.service.JournalService;
 import com.ethanedmond.util.Dialog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 
 public class Driver {
-    public static void main(String[] args) { // TODO schtasks /DELETE here instead of doing it in sounder.bat
+    public static void main(String[] args) {
         int alarm_id = Integer.parseInt(args[0]);
+        String taskName = args[1];
         JournalService journalService = new JournalService();
         AlarmService alarmService = new AlarmService();
+        Logger log = LogManager.getLogger(Driver.class);
         try {
+            Runtime.getRuntime().exec("schtasks /DELETE /F /TN " + taskName);
             Clip clip = AudioSystem.getClip();
             URL url = Driver.class.getResource("/Alarm01.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
@@ -22,17 +27,17 @@ public class Driver {
             clip.loop(20);
             Dialog.runDialog("Are you awake? ");
             clip.stop();
-            alarmService.fireAlarm(alarm_id);
+            alarmService.fireAlarm(alarm_id, log);
             String content = Dialog.runDialog("What did you dream about? ");
             Entry added = new Entry(alarm_id, content);
-            journalService.addEntry(added);
-            System.out.println("Entry successfully added to journal"); // TODO change this to a log this message instead of printing it
+            journalService.addEntry(added, log);
+            log.info("Entry" + alarm_id + " successfully added!");
         } catch (IOException err) { // TODO log errors instead of printing them
-            err.printStackTrace();
+            log.error("Error: cant run schtasks or cant get audioInputStream", err);
         } catch (UnsupportedAudioFileException err) {
-            err.printStackTrace();
+            log.error("Error: audio file is invalid",err);
         } catch (LineUnavailableException err) {
-            err.printStackTrace();
+            log.error("Error: unable to get clip from AudioSystem", err);
         }
     }
 }
